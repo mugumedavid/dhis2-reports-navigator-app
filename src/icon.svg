@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <rect width="48" height="48" rx="8" fill="#1565C0"/>
+  <!-- Source A -->
+  <circle cx="11" cy="14" r="4.5" fill="white"/>
+  <!-- Source B -->
+  <circle cx="11" cy="34" r="4.5" fill="white"/>
+  <!-- Merge arms -->
+  <path d="M15.5 14 L28 24 L15.5 34" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Connector to target -->
+  <line x1="28" y1="24" x2="32.5" y2="24" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Target (merged) -->
+  <circle cx="37" cy="24" r="4.5" fill="white"/>
+</svg>

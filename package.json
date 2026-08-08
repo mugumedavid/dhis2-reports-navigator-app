@@ -1,0 +1,29 @@
+{
+  "name": "reports-navigator",
+  "version": "1.0.0",
+  "description": "A card gallery for finding and opening saved DHIS2 reports, organised into groups.",
+  "author": {
+    "name": "David Mugume",
+    "email": "mugumedavid@gmail.com",
+    "url": "https://www.linkedin.com/in/davidmugume/"
+  },
+  "license": "BSD-2-Clause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mugumedavid/dhis2-reports-navigator-app"
+  },
+  "scripts": {
+    "start": "d2-app-scripts start",
+    "build": "d2-app-scripts build",
+    "pack": "d2-app-scripts pack"
+  },
+  "dependencies": {
+    "@dhis2/app-runtime": "^3.10.0",
+    "@dhis2/ui": "^9.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@dhis2/cli-app-scripts": "^12.6.3"
+  }
+}
