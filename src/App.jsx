@@ -62,7 +62,8 @@ export default function App() {
         setResolving(true)
         loadConfig(engine).then(async cfg => {
             if (!active) return
-            const safe = cfg && cfg.groups ? cfg : { groups: [] }
+            const base = cfg && cfg.groups ? cfg : { groups: [] }
+            const safe = { ...base, useSqlViewerApp: base.useSqlViewerApp ?? false }
             setConfig(safe)
             await refresh(safe)
             if (active) setResolving(false)
@@ -165,6 +166,7 @@ export default function App() {
                         group={group}
                         reports={group.resolvedReports}
                         baseUrl={baseUrl}
+                        useSqlViewerApp={config.useSqlViewerApp}
                     />
                 ))
             )}

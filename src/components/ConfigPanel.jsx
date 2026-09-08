@@ -6,6 +6,7 @@ import {
     ModalActions,
     ButtonStrip,
     Button,
+    Checkbox,
     InputField,
     IconAdd16,
     IconDelete16,
@@ -36,6 +37,9 @@ function move(arr, index, delta) {
 // report name for already-added reports (their stored displayName may be blank).
 export default function ConfigPanel({ config, readable, onSave, onClose }) {
     const [groups, setGroups] = useState(clone(config?.groups))
+    const [useSqlViewerApp, setUseSqlViewerApp] = useState(
+        !!config?.useSqlViewerApp
+    )
     const [saving, setSaving] = useState(false)
     const [error, setError] = useState('')
     const [collapsed, setCollapsed] = useState({}) // { [groupId]: true }
@@ -103,7 +107,7 @@ export default function ConfigPanel({ config, readable, onSave, onClose }) {
         setError('')
         setSaving(true)
         try {
-            await onSave({ groups })
+            await onSave({ groups, useSqlViewerApp })
         } catch (e) {
             setError(e.message || 'Could not save configuration.')
             setSaving(false)
@@ -121,6 +125,19 @@ export default function ConfigPanel({ config, readable, onSave, onClose }) {
                         <NoticeBox error>{error}</NoticeBox>
                     </div>
                 ) : null}
+
+                <div style={styles.settingsPanel}>
+                    <Checkbox
+                        dense
+                        label="Use SQL Viewer app by PEPFAR to view SQL Views"
+                        checked={useSqlViewerApp}
+                        onChange={({ checked }) => setUseSqlViewerApp(checked)}
+                    />
+                    <div style={styles.settingsHint}>
+                        When off, SQL View cards open the raw API HTML table. When on,
+                        they open in the PEPFAR SQL Viewer app instead.
+                    </div>
+                </div>
 
                 {groups.length === 0 ? (
                     <NoticeBox title="No groups yet">
@@ -222,6 +239,19 @@ export default function ConfigPanel({ config, readable, onSave, onClose }) {
 }
 
 const styles = {
+    settingsPanel: {
+        border: '1px solid #d0d5dd',
+        borderRadius: 10,
+        padding: 16,
+        marginBottom: 18,
+        background: '#f4f5f7',
+    },
+    settingsHint: {
+        fontSize: 12,
+        color: '#6c7787',
+        marginTop: 6,
+        marginLeft: 26,
+    },
     group: {
         border: '1px solid #d0d5dd',
         borderRadius: 10,

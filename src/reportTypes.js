@@ -5,7 +5,8 @@
 //                  and (b) fetch the live displayName/description
 //   - label:       short human label shown as a badge on the card
 //   - defaultIcon: emoji used when the admin has not set a custom one
-//   - buildLaunchUrl(baseUrl, uid): where clicking the card takes the user
+//   - buildLaunchUrl(baseUrl, uid, opts): where clicking the card takes the user
+//                  (opts is an optional settings object; only sqlView uses it today)
 //
 // All URL patterns were verified against DHIS2 2.40.10.
 
@@ -26,10 +27,14 @@ export const REPORT_TYPES = {
         defaultIcon: '🗃️',
         accent: '#7c3aed', // purple
         uidHint: 'Maintenance app → SQL View → open the view → copy its id',
-        // Renders the SQL view's data as an HTML table directly from the API.
+        // Default: renders the SQL view's data as an HTML table directly from the API.
         // For MATERIALIZED_VIEW this shows the last-refreshed snapshot.
-        buildLaunchUrl: (baseUrl, uid) =>
-            `${baseUrl}/api/sqlViews/${uid}/data.html`,
+        // When the "Use SQL Viewer app by PEPFAR" setting is on, opens the PEPFAR
+        // SQL Viewer app instead, which renders the view more richly.
+        buildLaunchUrl: (baseUrl, uid, opts = {}) =>
+            opts.useSqlViewerApp
+                ? `${baseUrl}/apps/SQLViewer#/view/${uid}`
+                : `${baseUrl}/api/sqlViews/${uid}/data.html`,
     },
     visualization: {
         resource: 'visualizations',

@@ -5,7 +5,7 @@ import ReportCard from './ReportCard'
 // Renders one logical group: a pronounced, collapsible heading (chevron + emoji
 // badge + name + count + description) and a grid of cards. Only rendered when the
 // group has visible reports.
-export default function GroupSection({ group, reports, baseUrl }) {
+export default function GroupSection({ group, reports, baseUrl, useSqlViewerApp }) {
     const [collapsed, setCollapsed] = useState(false)
 
     function toggle() {
@@ -51,7 +51,12 @@ export default function GroupSection({ group, reports, baseUrl }) {
             {!collapsed ? (
                 <div style={styles.grid}>
                     {reports.map(report => (
-                        <ReportCard key={report.id} report={report} baseUrl={baseUrl} />
+                        <ReportCard
+                            key={report.id}
+                            report={report}
+                            baseUrl={baseUrl}
+                            useSqlViewerApp={useSqlViewerApp}
+                        />
                     ))}
                 </div>
             ) : null}

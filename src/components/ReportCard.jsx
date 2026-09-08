@@ -7,7 +7,7 @@ import TypeIcon from './TypeIcon'
 // text-indent) and any wrapped line flows underneath it. The text area is a fixed
 // 3 lines total — name takes up to 2 lines when a description is present (3 when
 // not), and the description fills whatever lines remain below the name.
-export default function ReportCard({ report, baseUrl }) {
+export default function ReportCard({ report, baseUrl, useSqlViewerApp }) {
     const def = getReportType(report.type)
     const [hover, setHover] = useState(false)
     if (!def) return null
@@ -15,7 +15,7 @@ export default function ReportCard({ report, baseUrl }) {
     const customIcon = report.icon || '' // if set, replaces the type icon in the slot
     const name = report.nameOverride || report.displayName || report.uid
     const description = report.descriptionOverride || report.description || ''
-    const url = def.buildLaunchUrl(baseUrl, report.uid)
+    const url = def.buildLaunchUrl(baseUrl, report.uid, { useSqlViewerApp })
 
     function open() {
         window.open(url, '_blank', 'noopener,noreferrer')
