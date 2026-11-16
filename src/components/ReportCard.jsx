@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useLayoutEffect } from 'react'
 import { getReportType } from '../reportTypes'
 import TypeIcon from './TypeIcon'
+
+const LINE = 18 // px per text line (both name and description share this)
 
 // A single clickable report card (light theme, smoke-grey, fixed uniform size).
 // Layout: the type icon sits top-left; the name's first line clears it (via
@@ -10,11 +12,30 @@ import TypeIcon from './TypeIcon'
 export default function ReportCard({ report, baseUrl, useSqlViewerApp }) {
     const def = getReportType(report.type)
     const [hover, setHover] = useState(false)
+    const nameRef = useRef(null)
+    // How many of the 3 lines the name actually occupies (1 or 2 when a
+    // description is present). The description then clamps to whatever lines
+    // remain, so its ellipsis always lands on a visible line instead of being
+    // clipped by the fixed-height card.
+    const [nameLines, setNameLines] = useState(1)
+
+    const name = report.nameOverride || report.displayName || report.uid
+    const description = report.descriptionOverride || report.description || ''
+
+    useLayoutEffect(() => {
+        const el = nameRef.current
+        if (!el) return undefined
+        const measure = () =>
+            setNameLines(Math.max(1, Math.round(el.clientHeight / LINE)))
+        measure()
+        const ro = new ResizeObserver(measure)
+        ro.observe(el)
+        return () => ro.disconnect()
+    }, [name, description])
+
     if (!def) return null
 
     const customIcon = report.icon || '' // if set, replaces the type icon in the slot
-    const name = report.nameOverride || report.displayName || report.uid
-    const description = report.descriptionOverride || report.description || ''
     const url = def.buildLaunchUrl(baseUrl, report.uid, { useSqlViewerApp })
 
     function open() {
@@ -50,6 +71,7 @@ export default function ReportCard({ report, baseUrl, useSqlViewerApp }) {
                 <span style={{ ...styles.open, opacity: hover ? 1 : 0 }}>↗</span>
 
                 <div
+                    ref={nameRef}
                     style={{
                         ...styles.name,
                         WebkitLineClamp: description ? 2 : 3,
@@ -58,14 +80,19 @@ export default function ReportCard({ report, baseUrl, useSqlViewerApp }) {
                     {name}
                 </div>
                 {description ? (
-                    <div style={styles.desc}>{description}</div>
+                    <div
+                        style={{
+                            ...styles.desc,
+                            WebkitLineClamp: Math.max(1, 3 - nameLines),
+                        }}
+                    >
+                        {description}
+                    </div>
                 ) : null}
             </div>
         </div>
     )
 }
-
-const LINE = 18 // px per text line (both name and description share this)
 
 const styles = {
     card: {
