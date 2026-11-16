@@ -29,7 +29,7 @@ The app is fully generic: it works with any DHIS2 instance and any saved reports
 
 ## Requirements
 
-- DHIS2 2.40 or later
+- DHIS2 2.40 to 2.42
 - A superuser (holding `ALL` or `F_SYSTEM_SETTING`) to configure groups and reports
 - Read access to the DHIS2 dataStore for all users of the app
 
@@ -101,6 +101,10 @@ npm start
 ```
 
 The dev server proxies to a DHIS2 instance. Set the target in `d2.config.js` or via the `DHIS2_BASE_URL` environment variable.
+
+## AI use
+
+Parts of this project, including portions of the code and this documentation, were produced with the help of AI coding assistants. All AI-assisted output was reviewed and tested by the maintainer before release.
 
 ## License
 
