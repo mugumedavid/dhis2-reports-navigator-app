@@ -29,7 +29,7 @@ The app is fully generic: it works with any DHIS2 instance and any saved reports
 
 ## Requirements
 
-- DHIS2 2.40 to 2.42
+- DHIS2 2.40 to 2.43
 - A superuser (holding `ALL` or `F_SYSTEM_SETTING`) to configure groups and reports
 - Read access to the DHIS2 dataStore for all users of the app
 
